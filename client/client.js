@@ -36,7 +36,7 @@ requirejs.define('requestHelper', function() {
     //return new apjs.RequestHelper();
 });
 
-// Gets an instance of the player from the "container"
+// Gets an instance of the player and requestHelper from the "container"
 requirejs(['player', 'requestHelper'], function(player, requestHelper) {    
     // Now that we have our instance, use it to our heart's content
     player.executeTest();
