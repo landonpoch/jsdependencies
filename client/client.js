@@ -34,7 +34,11 @@ requirejs.define('player', ['requestHelper'], function(requestHelper) {
 });
 
 // Gets an instance of the player from the "container"
-requirejs(['player'], function(player) {    
+requirejs(['player', 'requestHelper'], function(player, requestHelper) {    
     // Now that we have our instance, use it to our heart's content
     player.executeTest();
+    
+    // You can see the requestHelper used by the UI is the same as the
+    // requestHelper used by the player.
+    requestHelper.printAuthHeader();
 });
