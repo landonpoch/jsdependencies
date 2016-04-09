@@ -1,3 +1,5 @@
+'use strict';
+
 // Initialize "container"
 var ioc = require('./ioc');
 

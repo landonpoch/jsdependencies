@@ -1,5 +1,3 @@
-'use strict';
-
 // Uses CommonJS (which is a node.js built in function) to
 // get a handle on the requirejs library.
 // see: http://requirejs.org/docs/node.html
