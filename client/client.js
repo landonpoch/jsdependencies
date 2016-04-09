@@ -14,26 +14,27 @@
 // the UI codebases can add a reference to CommonJS fairly easily.
 var requirejs = require('requirejs');
 
+// loads the 2 packages we need
+var csl = require('services');
+var apjs = require('player');
+
 // Defines the requestHelper named dependency
 requirejs.define('requestHelper', function() {
     // Calls the RequestHelper's constructor passing in no dependencies
     // You can choose which requestHelper you want to use in the executing assembly.
-    // We have below one module called player (which represents an APJS npm package)
-    // and another module called services (which represents a CSL npm package)
     
-    //return require('./node_modules/player/requestHelper')();
-    return require('./node_modules/services/requestHelper')();
+    return new csl.RequestHelper();
+    //return new apjs.RequestHelper();
 });
 
 // Defines the player named dependency.  Player requires a requestHelper
 requirejs.define('player', ['requestHelper'], function(requestHelper) {
     // Calls the Player's constructor passing it the RequestHelper as a dependency
-    return require('./node_modules/player/player')(requestHelper);
+    return new apjs.Player(requestHelper);
 });
 
 // Gets an instance of the player from the "container"
-requirejs(['player'], function(player) {
-    
+requirejs(['player'], function(player) {    
     // Now that we have our instance, use it to our heart's content
     player.executeTest();
 });
