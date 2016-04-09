@@ -18,6 +18,15 @@ var requirejs = require('requirejs');
 var csl = require('services');
 var apjs = require('player');
 
+// This is an example of how we could register certain modules inside of our packages.
+// This would be similar to the IoC modules we had in C#
+apjs.IoC(requirejs);
+
+// We could create an IoC module for CSL also
+// csl.IoC(requirejs);
+
+// Modules that the UI needs to decide should be registered in the UI project instead
+// of in IoC modules within packages.
 // Defines the requestHelper named dependency
 requirejs.define('requestHelper', function() {
     // Calls the RequestHelper's constructor passing in no dependencies
@@ -25,12 +34,6 @@ requirejs.define('requestHelper', function() {
     
     return new csl.RequestHelper();
     //return new apjs.RequestHelper();
-});
-
-// Defines the player named dependency.  Player requires a requestHelper
-requirejs.define('player', ['requestHelper'], function(requestHelper) {
-    // Calls the Player's constructor passing it the RequestHelper as a dependency
-    return new apjs.Player(requestHelper);
 });
 
 // Gets an instance of the player from the "container"
