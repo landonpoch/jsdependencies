@@ -9,9 +9,13 @@
 <!-- include requirejs but don't pollute the global namespace -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"></script>
 <script type="text/javascript">
-// nasty! we have to move require and define from the global namespace first
-requirejs = window.require;
-requirejs.define = window.define;
+// Create our container, we're just using requirejs for this right now
+var container = {
+    resolve: window.require,
+    register: window.define
+}
+// nasty! we have to move require and define from the global namespace before including scripts below
+window.requirejs = undefined;
 window.require = undefined;
 window.define = undefined;
 </script>
@@ -24,17 +28,18 @@ window.define = undefined;
 <script type="text/javascript">
 
 // This is the part where the UI can wire up the dependencies it needs
-// They could load default apjs registrations
-apjs.IoC(requirejs);
+// First registrations take priority so if they specify requestHelper prior to
+// apjs specifying requestHelper, then the UI gets priority.
+// uncomment the following line to use whatever requestHelper apjs provides.
+container.register('requestHelper', function() { return new csl.RequestHelper(); });
+
+// You would need to pass the container to apjs prior to using it.
+apjs.IoC(container);
 // and default csl registrations
 // csl.IoC(requirejs);
 
-// They could also explicitly say which implementations should be used for a given component
-// for example, they could change csl.RequestHelper to apjs.RequestHelper below.
-requirejs.define('requestHelper', function() { return new csl.RequestHelper(); });
-
 // They could then start using the services by requiring them by name
-requirejs(['player', 'requestHelper'], function(player, requestHelper)
+container.resolve(['player', 'requestHelper'], function(player, requestHelper)
 {
     // Now that we have our instance, use it to our heart's content
     player.executeTest();
