@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>Test page</title>
+</head>
+<body>
+<div id="testDiv">
+</div>
+
+<!-- include requirejs but don't pollute the global namespace -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"></script>
+<script type="text/javascript">
+// nasty! we have to move require and define from the global namespace first
+requirejs = window.require;
+requirejs.define = window.define;
+window.require = undefined;
+window.define = undefined;
+</script>
+
+<!-- include our modules -->
+<script type="text/javascript" src="node_modules/services/cslbundle.js"></script>
+<script type="text/javascript" src="node_modules/player/apjsbundle.js"></script>
+
+<!-- party away, this would be done in another script file developed by the client -->
+<script type="text/javascript">
+
+// This is the part where the UI can wire up the dependencies it needs
+// They could load default apjs registrations
+apjs.IoC(requirejs);
+// and default csl registrations
+// csl.IoC(requirejs);
+
+// They could also explicitly say which implementations should be used for a given component
+// for example, they could change csl.RequestHelper to apjs.RequestHelper below.
+requirejs.define('requestHelper', function() { return new csl.RequestHelper(); });
+
+// They could then start using the services by requiring them by name
+requirejs(['player', 'requestHelper'], function(player, requestHelper)
+{
+    // Now that we have our instance, use it to our heart's content
+    player.executeTest();
+    
+    // You can see the requestHelper used by the UI is the same as the
+    // requestHelper used by the player.
+    requestHelper.printAuthHeader();
+    requestHelper.printAuthHeader();
+});
+</script>
+
+</body>
+</html>

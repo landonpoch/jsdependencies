@@ -14,3 +14,5 @@ ioc.getModules(['player', 'requestHelper'], function(player, requestHelper) {
     // requestHelper used by the player.
     requestHelper.printAuthHeader();
 });
+
+module.exports = ioc;
